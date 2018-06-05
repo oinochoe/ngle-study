@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/main">
+<head>
+    
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="/css/reset.css" />
+	<link rel="stylesheet" href="/webjars/bootstrap/3.3.5/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/webjars/pen/0.1.0/src/pen.css" />
+	<link rel="stylesheet" href="/webjars/origoni-startbootstrap-clean-blog/1.0.3/css/clean-blog.min.css">
+	<link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/custom.css" />
+	<link rel="icon" type="image/png"  href="/image/favicon.png"/>
+    <title th:text="'Ooops, ' + ${error}">Ooops, page not found</title>
+    
+</head>
+<body>
+	<!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1 th:text="${error}"></h1>
+                        <hr class="small">
+                        <span class="subheading">Ooops, page not found</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div style="display:block; text-align:center; margin:30px auto; font-size:30px; color:#000">
+    
+    Ooops, page not found
+    
+    </div>
+
+    
+</body>
+</html>

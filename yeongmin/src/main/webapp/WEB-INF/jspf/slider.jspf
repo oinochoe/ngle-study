@@ -1,0 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+    <div class="site-heading">
+        <h1>Yeongmin Blog</h1>
+        <hr class="small">
+        <h2 class="text-center" id="cityname"></h2>
+        <div id="city-forecast">
+            <div class="temp-icon"></div>
+            <div class="temp"></div>
+            <!-- forecast  -->
+        </div>
+    </div>
+    <div class="site-heading v2">
+        <h1>Yeongmin Blog Slider</h1>
+
+    </div>

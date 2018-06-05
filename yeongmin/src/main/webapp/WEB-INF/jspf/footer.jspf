@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://www.facebook.com/noel.kim.773776">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gitlab.com/noel86/private">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/copstyle86/">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>                    
+                    <span class="subheading">
+                        <!-- 현재 시간  -->
+                        <span class="timer" style="display:block;">
+                            <canvas id="canvas" width="100" height="100"></canvas>
+                        </span>
+                        <!-- //현재 시간  -->
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.5/dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+// navbar custom.
+    
+    window.onscroll = function() {    	
+   		myFunction();   	
+    };
+
+	function myFunction() {
+	    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+	        document.getElementById("navigation-bar").className = "navbar navbar-default navbar-custom navbar-fixed-top fixed";
+	    } else {
+	        document.getElementById("navigation-bar").className = "navbar navbar-default navbar-custom navbar-fixed-top";
+	    }
+	}
+	
+	// Test for the ugliness.
+	if (window.location.hash == '#_=_'){
+
+	    // Check if the browser supports history.replaceState.
+	    if (history.replaceState) {
+
+	        // Keep the exact URL up to the hash.
+	        var cleanHref = window.location.href.split('#')[0];
+
+	        // Replace the URL in the address bar without messing with the back button.
+	        history.replaceState(null, null, cleanHref);
+	        
+	    } else {
+
+	        // Well, you're on an old browser, we can get rid of the _=_ but not the #.
+	        window.location.hash = '';
+
+	    }
+
+	}
+    
+    
+</script>
