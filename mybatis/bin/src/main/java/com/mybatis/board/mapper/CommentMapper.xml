@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.mybatis.board.mapper.CommentMapper">
+ 
+    <select id="commentCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM COMMENT
+    </select>
+    
+    <select id="commentList" resultType="com.mybatis.board.domain.CommentVO">
+        SELECT *
+        FROM COMMENT     
+        WHERE BNO = #{bno}
+    </select>
+    
+    <!-- WHERE BNO = #{bno} order by CNO desc -->
+    
+    <insert id="commentInsert" parameterType="com.mybatis.board.domain.CommentVO">
+	    <selectKey keyProperty="cno" resultType="int" order="BEFORE">
+	      SELECT ifnull(MAX(CNO), 0) FROM comment where BNO=#{bno} order by reg_date desc limit 1
+	    </selectKey>
+        INSERT INTO COMMENT (CNO, BNO, CONTENT, WRITER, REG_DATE) VALUES(#{cno} + 1,#{bno},#{content},#{writer},now()) 
+    </insert>
+    
+    <update id="commentUpdate" parameterType="com.mybatis.board.domain.CommentVO">
+        UPDATE COMMENT
+            SET
+            CONTENT = #{content}
+        	WHERE CNO = #{cno}
+    </update>
+    
+    <delete id="commentDelete" parameterType="int">
+        DELETE FROM COMMENT WHERE CNO = #{cno}
+    </delete>
+</mapper>
