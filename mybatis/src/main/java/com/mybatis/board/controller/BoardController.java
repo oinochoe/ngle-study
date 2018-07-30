@@ -76,7 +76,10 @@ public class BoardController {
 	        
 //	        if(files.isEmpty()){
 	            try {
-					mBoardService.boardInsertService(board);
+	            	int i = mBoardService.boardInsertService(board);
+	            	System.out.println(i);
+	            	// update 쿼리문으로 insert 했을 때 실패하면 에러가 나지 않는다.
+	            	// 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -149,7 +152,8 @@ public class BoardController {
 	        board.setContent(request.getParameter("content"));
 	        board.setBno(Integer.parseInt(request.getParameter("bno")));
 	        
-	        mBoardService.boardUpdateService(board);
+	        int i = mBoardService.boardUpdateService(board);
+	        System.out.println(i);
 	        
 	        return "redirect:/detail/"+request.getParameter("bno"); 
 	    }
