@@ -5,7 +5,7 @@
   
   <mapper namespace="org.zerock.mapper.MemberMapper">
   	
-  	<select id="getTime" resultType="int">
+  	<select id="getTime" resultType="string">
   		SELECT now();
   	</select>
   	
