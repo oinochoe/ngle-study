@@ -14,10 +14,10 @@ public class UserDaoTest {
     public static void main(String[] args) throws SQLException {
 
         //Daofactory 사용
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        //ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
         //GenericXmlApplicationContext 사용 해서 스프링 API 대신 xml화 한다.
-        //ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 
         UserDao dao = context.getBean("userDao", UserDao.class);
 
