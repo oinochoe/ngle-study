@@ -2,6 +2,8 @@ package springbook.user;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import springbook.user.dao.DaoFactory;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.User;
@@ -9,11 +11,14 @@ import springbook.user.domain.User;
 import java.sql.SQLException;
 
 public class UserDaoTest {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws SQLException {
 
+        //Daofactory 사용
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
-        //UserDao dao = new DaoFactory().userDao();
+        //GenericXmlApplicationContext 사용 해서 스프링 API 대신 xml화 한다.
+        //ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+
         UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
@@ -33,25 +38,7 @@ public class UserDaoTest {
 
         System.out.println(user2.getId() + "조회 성공");
 
-        /*
-        다른 객체가 생성된다.
-        DaoFactory factory = new DaoFactory();
-        UserDao dao1 = factory.userDao();
-        UserDao dao2 = factory.userDao();
 
-        System.out.println(dao1);
-        System.out.println(dao2);
-        */
-
-        /*
-         * 스프링 컨텍스트로 가져오는 오브젝트는 출력값이 같다. 매번 new를 사용해서 새로운 객체가 만들어지지 않는다.
-         *
-         * UserDao dao3 = context.getBean("userDao", UserDao.class);
-         * UserDao dao4 = context.getBean("userDao", UserDao.class);
-         *
-         * System.out.println(dao3);
-         * System.out.println(dao4);
-         */
 
     }
 }
