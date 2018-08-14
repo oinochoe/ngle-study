@@ -1,11 +1,7 @@
 package springbook.user;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
-import springbook.user.dao.DaoFactory;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.User;
 
@@ -16,11 +12,6 @@ import org.junit.Test;
 public class UserDaoTest {
     @Test
     public void addAndGet() throws SQLException {
-        //Daofactory 사용
-        //ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-        //GenericXmlApplicationContext 사용 해서 스프링 API 대신 xml화 한다.
-        //ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         UserDao dao = context.getBean("userDao", UserDao.class);
