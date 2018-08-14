@@ -1,6 +1,8 @@
 package springbook.user;
 
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import springbook.user.domain.User;
 import springbook.user.dao.UserDao;
 import java.sql.SQLException;
@@ -20,25 +22,23 @@ public class UserDaoTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         UserDao dao = context.getBean("userDao", UserDao.class);
-        User user = new User("goyonam", "김영민", "springno1");
+        User user1 = new User("goyonam", "김영민", "springno1");
+        User user2 = new User("goyonam2", "김영민2", "springno2");
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
-        /*User user = new User();
-        user.setId("noel");
-        user.setName("Yeongmin");
-        user.setPassword("toby");*/
+        dao.add(user1);
+        dao.add(user2);
+        assertThat(dao.getCount(), is(2));
 
-        dao.add(user);
-        assertThat(dao.getCount(), is(1));
+        User userget1 = dao.get(user1.getId());
+        assertThat(userget1.getName(), is(user1.getName()));
+        assertThat(userget1.getPassword(), is(user1.getPassword()));
 
-        User user2 = dao.get(user.getId());
-
-        assertThat(user2.getId(), is(user.getId()));
-        assertThat(user2.getName(), is(user.getName()));
-        assertThat(user2.getPassword(), is(user.getPassword()));
-
+        User userget2 = dao.get(user2.getId());
+        assertThat(userget2.getName(), is(user2.getName()));
+        assertThat(userget2.getPassword(), is(user2.getPassword()));
     }
 
     @Test
@@ -67,7 +67,17 @@ public class UserDaoTest {
         dao.add(user3);
         assertThat(dao.getCount(), is(3));
         System.out.println(dao.getCount());
+    }
 
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getUserFailure() throws SQLException {
+        ApplicationContext context = new GenericXmlApplicationContext ("applicationContext.xml");
+
+        UserDao dao = context.getBean("userDao", UserDao.class);
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
+
+        dao.get("unknown_id"); // 이 메소드 실행 중에 예외가 발생하지 않으면 테스트가 실패한다.
     }
 
     public static void main(String[] args) {
