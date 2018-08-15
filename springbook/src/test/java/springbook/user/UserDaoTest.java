@@ -2,13 +2,8 @@ package springbook.user;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.User;
 
@@ -18,21 +13,27 @@ import java.sql.SQLException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/applicationContext.xml")
 public class UserDaoTest {
 
-    @Autowired //UserDao 타입 빈을 직접 DI 받는다.
-    private UserDao dao;
+    UserDao dao;
     private User user1;
     private User user2;
     private User user3;
 
     @Before // junit 이 제공하는 어노테이션 @Test 메소드가 실행되기 전에 먼저 실행돼야 하는 메소드를 정의
     public void setUp() {
-        this.user1 = new User("yeongmin","yeongmin1232","spring1");
+
+        dao = new UserDao();
+        DataSource dataSource = new SingleConnectionDataSource(
+                "jdbc:mysql://localhost:3306/testdb?useSSL=false&amp;serverTimezone=UTC","root","admin",true);
+        dao.setDataSource(dataSource);
+
+        this.user1 = new User("yeongmin","yeongmin122223","spring1");
         this.user2 = new User("yeongmin2","yeongmin123222","spring2");
         this.user3 = new User("yeongmin3","yeongmin1233333","spring3");
+
     }
 
     @Test
