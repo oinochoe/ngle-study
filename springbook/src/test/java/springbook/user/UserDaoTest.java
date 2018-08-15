@@ -29,6 +29,8 @@ public class UserDaoTest {
     @Before // junit 이 제공하는 어노테이션 @Test 메소드가 실행되기 전에 먼저 실행돼야 하는 메소드를 정의
     public void setUp() {
         //ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        System.out.println(this.context);
+        System.out.println(this);
         this.dao = this.context.getBean("userDao", UserDao.class);
         this.user1 = new User("yeongmin","yeongmin123","spring1");
         this.user2 = new User("yeongmin2","yeongmin123222","spring2");
