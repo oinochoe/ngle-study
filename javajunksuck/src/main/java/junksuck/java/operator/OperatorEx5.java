@@ -1,4 +1,4 @@
-package junksuck.java.variable;
+package junksuck.java.operator;
 
 public class OperatorEx5 {
     public static void main (String[] args) throws ArithmeticException{
