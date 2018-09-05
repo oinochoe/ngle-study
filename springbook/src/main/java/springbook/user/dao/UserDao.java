@@ -98,18 +98,47 @@ public class UserDao {
     }
 
     public int getCount() throws SQLException {
-        Connection c = dataSource.getConnection();
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        PreparedStatement ps = c.prepareStatement("select count(*) from tbl_users");
+        try {
+            c = dataSource.getConnection();
+            ps = c.prepareStatement("select count(*) from tbl_users");
 
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
+            rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    /*
+                     * 만들어진 ResultSet을 닫아주는 기능.
+                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
+                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
+                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
+                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
+                     */
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
 
-        rs.close();
-        ps.close();
-        c.close();
+                }
+            }
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (SQLException e) {
 
-        return count;
+                }
+            }
+        }
     }
 }
