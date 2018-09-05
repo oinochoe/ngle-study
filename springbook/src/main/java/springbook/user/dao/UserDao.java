@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 
-public class UserDao {
+public abstract class UserDao {
 
     private DataSource dataSource;
 
@@ -68,11 +68,7 @@ public class UserDao {
 
         try {
             c = dataSource.getConnection();
-
-            ps = makeStatement(c); // 변하는 부분을 메소드로 추출하고 변하지 않는 부분에서 호출하도록 만들었다.
-
-            ps = c.prepareStatement("delete from tbl_users");
-            ps.executeUpdate();
+            ps = makeStatement(c);
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -89,6 +85,7 @@ public class UserDao {
         try {
             c = dataSource.getConnection();
             ps = c.prepareStatement("select count(*) from tbl_users");
+
             rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
@@ -100,10 +97,6 @@ public class UserDao {
             if (c != null) { try {c.close();} catch (SQLException e) {} }
         }
     }
+    protected abstract PreparedStatement makeStatement(Connection c) throws SQLException;
 
-    private PreparedStatement makeStatement(Connection c) throws SQLException {
-        PreparedStatement ps;
-        ps = c.prepareStatement("delete from users");
-        return ps;
-    }
 }
