@@ -66,34 +66,18 @@ public class UserDao {
         Connection c = null;
         PreparedStatement ps = null;
 
-        try { // 예외가 발생할 가능성이 있는 코드를 모두 try 블럭으로 묶어준다
+        try {
             c = dataSource.getConnection();
+
+            ps = makeStatement(c); // 변하는 부분을 메소드로 추출하고 변하지 않는 부분에서 호출하도록 만들었다.
+
             ps = c.prepareStatement("delete from tbl_users");
             ps.executeUpdate();
         } catch (SQLException e) {
             throw e;
-            /*
-             * 예외가 발생했을 때 부가적으로 작업을 해줄 수 있도록 catch 블록을 둔다.
-             * 예외를 다시 메서드 밖으로 던지는 것 밖에 없다.
-             */
-        } finally { // finally이므로 try 블록에서 예외가 발생했을 때나 안 했을 때나 모두 실행
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                    /*
-                     * ps.close() 메소드에서도 SQL Exception이 발생할 수 있기 때문에 이를 잡아줘야 한다.
-                     * 그렇지 않으면 Connection을 close() 하지 못하고 메소드를 빠져나갈 수 있다.
-                     */
-                }
-            }
-            if (c != null) {
-                try {
-                    c.close(); //connection 반환
-                } catch (SQLException e) {
-
-                }
-            }
+        } finally {
+            if (ps != null) { try {ps.close();} catch (SQLException e) {} }
+            if (c != null) { try {c.close();} catch (SQLException e) {} }
         }
     }
 
@@ -105,40 +89,21 @@ public class UserDao {
         try {
             c = dataSource.getConnection();
             ps = c.prepareStatement("select count(*) from tbl_users");
-
             rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
             throw e;
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    /*
-                     * 만들어진 ResultSet을 닫아주는 기능.
-                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
-                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
-                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
-                     * close()는 만들어진 순서의 반대로 하는 것이 원칙이다.
-                     */
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-
-                }
-            }
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e) {
-
-                }
-            }
+            if (rs != null) { try {rs.close();} catch (SQLException e) {} }
+            if (ps != null) { try {ps.close();} catch (SQLException e) {} }
+            if (c != null) { try {c.close();} catch (SQLException e) {} }
         }
+    }
+
+    private PreparedStatement makeStatement(Connection c) throws SQLException {
+        PreparedStatement ps;
+        ps = c.prepareStatement("delete from users");
+        return ps;
     }
 }
