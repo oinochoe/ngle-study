@@ -27,7 +27,7 @@ public class UserDaoTest {
 
         dao = new UserDao();
         DataSource dataSource = new SingleConnectionDataSource(
-                "jdbc:mysql://localhost:3306/testdb?useSSL=false&amp;serverTimezone=UTC","root","admin",true);
+                "jdbc:mysql://localhost:3306/users?useSSL=false&amp;serverTimezone=UTC","root","admin",true);
         dao.setDataSource(dataSource);
 
         this.user1 = new User("yeongmin","yeongmin122223","spring1");
