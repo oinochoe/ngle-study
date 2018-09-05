@@ -4,14 +4,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import springbook.user.domain.User;
 
 import java.security.interfaces.RSAKey;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 
-public abstract class UserDao {
+public class UserDao {
 
     private DataSource dataSource;
 
@@ -68,7 +65,12 @@ public abstract class UserDao {
 
         try {
             c = dataSource.getConnection();
-            ps = makeStatement(c);
+
+            StatementStrategy strategy = new DeleteAllStatement();
+            ps = strategy.makePreparedStatement(c);
+
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -97,6 +99,5 @@ public abstract class UserDao {
             if (c != null) { try {c.close();} catch (SQLException e) {} }
         }
     }
-    protected abstract PreparedStatement makeStatement(Connection c) throws SQLException;
 
 }
