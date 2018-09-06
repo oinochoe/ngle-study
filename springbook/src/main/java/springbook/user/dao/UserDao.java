@@ -17,28 +17,21 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws SQLException {
-        class AddStatement implements StatementStrategy { // add 메소드 내부에 선언된 로컬 클래스
-            User user;
-
-            public AddStatement(User user) {
-                this.user = user;
-            }
-
+    public void add(final User user) throws SQLException {
+        class AddStatement implements StatementStrategy {
             public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
                 PreparedStatement ps = c.prepareStatement(
                         "insert into tbl_users(id, name, password) values(?,?,?)");
 
                 ps.setString(1, user.getId());
                 ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword()); /// 그런데 user는 어디서 가져올까?
-
+                ps.setString(3, user.getPassword()); // 로컬(내부) 클래스의 코드에서 외부의 메소드 로컬 변수에 직접 접근할 수 있다.
 
                 return ps;
             }
         }
 
-        StatementStrategy st = new AddStatement(user);
+        StatementStrategy st = new AddStatement(); // 생성자 파라미터로 user를 전달하지 않아도 된다.
         jdbcContextWithStatementStrategy(st);
     }
 
