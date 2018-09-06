@@ -6,6 +6,7 @@ import springbook.user.domain.User;
 import java.security.interfaces.RSAKey;
 import java.sql.*;
 import javax.sql.DataSource;
+import javax.swing.plaf.nimbus.State;
 
 
 public class UserDao {
@@ -17,6 +18,26 @@ public class UserDao {
     }
 
     public void add(User user) throws SQLException {
+        class AddStatement implements StatementStrategy { // add 메소드 내부에 선언된 로컬 클래스
+            User user;
+
+            public AddStatement(User user) {
+                this.user = user;
+            }
+
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement(
+                        "insert into tbl_users(id, name, password) values(?,?,?)");
+
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword()); /// 그런데 user는 어디서 가져올까?
+
+
+                return ps;
+            }
+        }
+
         StatementStrategy st = new AddStatement(user);
         jdbcContextWithStatementStrategy(st);
     }
