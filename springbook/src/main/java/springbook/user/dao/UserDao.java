@@ -18,21 +18,19 @@ public class UserDao {
     }
 
     public void add(final User user) throws SQLException {
-        class AddStatement implements StatementStrategy {
-            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement(
-                        "insert into tbl_users(id, name, password) values(?,?,?)");
+        jdbcContextWithStatementStrategy(
+        new StatementStrategy() {
+                public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                    PreparedStatement ps = c.prepareStatement(
+                            "insert into tbl_users(id, name, password) values(?,?,?)");
+                    ps.setString(1, user.getId());
+                    ps.setString(2, user.getName());
+                    ps.setString(3, user.getPassword());
 
-                ps.setString(1, user.getId());
-                ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword()); // 로컬(내부) 클래스의 코드에서 외부의 메소드 로컬 변수에 직접 접근할 수 있다.
-
-                return ps;
+                    return ps;
+                }
             }
-        }
-
-        StatementStrategy st = new AddStatement(); // 생성자 파라미터로 user를 전달하지 않아도 된다.
-        jdbcContextWithStatementStrategy(st);
+        );
     }
 
     public User get(String id) throws SQLException {
@@ -64,10 +62,13 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-
-            StatementStrategy st = new DeleteAllStatement(); // 선정한 전략 클래스의 오브젝트 생성
-            jdbcContextWithStatementStrategy(st); // 컨텍스트 호출. 전략 오브젝트 전달
-
+        jdbcContextWithStatementStrategy(
+            new StatementStrategy() {
+                public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                    return c.prepareStatement("delete from tbl_users");
+                }
+            }
+        );
     }
 
     public int getCount() throws SQLException {
