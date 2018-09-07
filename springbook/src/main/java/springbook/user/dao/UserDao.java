@@ -16,6 +16,8 @@ public class UserDao {
         this.jdbcContext = new JdbcContext(); // JdbcContext 생성(IOC)
         this.jdbcContext.setDataSource(dataSource); // 의존 오브젝트 주입(DI)
         this.dataSource = dataSource; // 아직 JdbcContext를 적용하지 않은 메소드를 위해 저장해둔다.
+        // 먼저 JdbcContext의 오브젝트를 만들어서 인스턴스 변수에 저장해두고, JdbcContext에 UserDao가 DI 받은
+        // DataSource 오브제를 주입해주면 완벽한 DI가 완성된다.
     }
 
 
