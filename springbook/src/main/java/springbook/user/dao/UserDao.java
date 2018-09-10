@@ -65,11 +65,17 @@ public class UserDao {
         return user;
     }
 
+
+
     public void deleteAll() throws SQLException {
+        executeSql("delete from tbl_users");
+    }
+
+    private void executeSql(final String query) throws SQLException {
         this.jdbcContext.workWithStatementStrategy(
             new StatementStrategy() {
                 public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                    return c.prepareStatement("delete from tbl_users");
+                    return c.prepareStatement(query);
                 }
             }
         );
