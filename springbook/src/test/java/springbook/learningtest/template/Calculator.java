@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Calculator {
     public Integer calcSum(String filepath) throws IOException {
         LineCallback sumCallback =
-            new LineCallback() {
+            new LineCallback<Integer>() {
             public Integer doSomethingWithLine(String line, Integer value) {
                 return value + Integer.valueOf(line);
             }};
@@ -16,11 +16,21 @@ public class Calculator {
 
     public Integer calcMultiply(String filepath) throws IOException {
         LineCallback multiplyCallback =
-            new LineCallback() {
+            new LineCallback<Integer>() {
                 public Integer doSomethingWithLine(String line, Integer value) {
                     return value * Integer.valueOf(line);
                 }};
         return lineReadTemplate(filepath, multiplyCallback, 1);
+    }
+
+    public String concatenate (String filepath) throws IOException {
+        LineCallback<String> concatenateCallback =
+            new LineCallback<String>() {
+                public String doSomethingWithLine(String line, String value) {
+                    return value + line;
+                }
+            };
+        return lineReadTemplate(filepath, concatenateCallback, ""); // 템플릿 메소드의 T는 모두 스트링이 된다.
     }
 
     public Integer fileReadTemplate(String filepath, BufferedReaderCallback callback) throws IOException {
@@ -43,16 +53,14 @@ public class Calculator {
         }
     }
 
-    public Integer lineReadTemplate(String filepath, LineCallback callback, int initVal) throws IOException {
-        // initVal --> 계산결과를 저장할 변수의 초기값
+    public <T> T lineReadTemplate(String filepath, LineCallback<T> callback, T initVal) throws IOException {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(filepath));
-            Integer res = initVal;
+            T res = initVal;
             String line = null;
-            while ((line = br.readLine()) != null) { // 파일의 각 라인을 루프를 돌면서 가져오는 것도 템플릿이 담당한다.
-                res = callback.doSomethingWithLine(line, res); // 각 라인의 내용을 가지고 계산하는 작업만 콜백에게 맡긴다.
-                // 콜백이 계산한 값을 저장해뒀다가 다음 라인 계산에 다시 사용한다.
+            while ((line = br.readLine()) != null) {
+                res = callback.doSomethingWithLine(line, res);
             }
             return res;
         } catch (IOException e) {
