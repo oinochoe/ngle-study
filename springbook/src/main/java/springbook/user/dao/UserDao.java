@@ -1,8 +1,10 @@
 package springbook.user.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import springbook.user.domain.User;
 
 import java.sql.*;
@@ -52,42 +54,27 @@ public class UserDao {
         return user;
     }
 
-    // JdbcTemplate 사용
-    /*public void deleteAll() {
-        this.jdbcTemplate.update(
-            new PreparedStatementCreator() {
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    return con.prepareStatement("delete from tbl_users");
-                }
-            }
-        );
-    }*/
-
-    // 위 보다 더 단순한 JdbcTemplate의 내장 콜백 사용
     public void deleteAll() {
         this.jdbcTemplate.update("delete from tbl_users");
     }
 
+    // 2중 콜백으로 만든 JdbcTemplate이용해서 만든 getCount
+    /*public int getCount() {
+        return this.jdbcTemplate.query(new PreparedStatementCreator() { // 첫번째 콜백
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                return con.prepareStatement("select count(*) from tbl_users");
+            }
+        }, new ResultSetExtractor<Integer>() { // 두번째 콜백
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                rs.next();
+                return rs.getInt(1);
+            }
+        });
+    }*/
 
-    public int getCount() throws SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            c = dataSource.getConnection();
-            ps = c.prepareStatement("select count(*) from tbl_users");
-
-            rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt(1);
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (rs != null) { try {rs.close();} catch (SQLException e) {} }
-            if (ps != null) { try {ps.close();} catch (SQLException e) {} }
-            if (c != null) { try {c.close();} catch (SQLException e) {} }
-        }
+    // 위보다 훨씬 간결한 JdbcTemplate 내장 메서드
+    public int getCount() {
+        return this.jdbcTemplate.queryForInt("select count(*) from tbl_users");
     }
 
     public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
