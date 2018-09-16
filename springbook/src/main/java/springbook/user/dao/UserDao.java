@@ -1,11 +1,11 @@
 package springbook.user.dao;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.User;
 
 import java.sql.*;
+import java.util.List;
 import javax.sql.DataSource;
 
 
@@ -37,6 +37,19 @@ public class UserDao {
                 }
             } // Resultset한 로우의 결과를 오브젝트에 매핑해주는 RowMapper 콜백
         );
+    }
+
+    public List<User> getAll() {
+        return this.jdbcTemplate.query("select * from tbl_users order by id",
+            new RowMapper<User>() {
+            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                User user = new User();
+                user.setId(rs.getString("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("password"));
+                return user;
+            }
+        });
     }
 
     public void deleteAll() {
