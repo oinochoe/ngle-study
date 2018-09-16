@@ -1,17 +1,15 @@
 package junksuck.java.headfirst;
 
-import java.util.ArrayList;
-
 public class SimpleDotComTestDrive {
-    private static ArrayList<String> locations;
-
     public static void main (String[] args) {
         int numOfGuesses=0;
         GameHelper helper = new GameHelper();
-
         SimpleDotCom dot = new SimpleDotCom();
+
         int randomNum = (int) (Math.random() * 5);
 
+        // Sets an array for the DotCom object, sets 3 consecutive cells.
+        int[] locations = {randomNum, randomNum+1, randomNum+2};
         dot.setLocationCells(locations);
         boolean isAlive = true;
 
@@ -24,8 +22,5 @@ public class SimpleDotComTestDrive {
                 System.out.println(numOfGuesses + " guesses");
             }
         }
-        dot.setLocationCells(locations);
-        String userGuess = "2";
-        String result = dot.checkYourself(userGuess);
     }
 }
