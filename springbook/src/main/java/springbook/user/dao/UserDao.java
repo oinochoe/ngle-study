@@ -1,10 +1,8 @@
 package springbook.user.dao;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.User;
 
 import java.sql.*;
@@ -26,53 +24,25 @@ public class UserDao {
                 user.getId(), user.getName(), user.getPassword());
     }
 
-    public User get(String id) throws SQLException {
-        Connection c = dataSource.getConnection();
-
-        PreparedStatement ps = c.prepareStatement(
-                "select * from tbl_users where id = ?");
-
-        ps.setString(1, id);
-
-        ResultSet rs = ps.executeQuery();
-
-        User user = null; // User는 NULL 상태로 초기화 해놓는다.
-        if (rs.next()) { // id를 조건으로 한 쿼리의 결과가 있으면 User 오브제를 만들고 값을 넣어준다.
-            user = new User();
-            user.setId(rs.getString("id"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-        }
-
-        rs.close();
-        ps.close();
-        c.close();
-
-        if (user == null) throw new EmptyResultDataAccessException(1);
-        // 결과가 없으면 User는 null 상태 그대로 일 것이다. 이를 확인해서 예외를 던져준다.
-
-        return user;
+    public User get(String id) {
+        return this.jdbcTemplate.queryForObject("select * from tbl_users where id = ?", new Object[]{id},
+            //sql 바인딩할 파라미터 값. 가변인자 대신 배열을 사용.
+            new RowMapper<User>() {
+                public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    User user = new User();
+                    user.setId(rs.getString("id"));
+                    user.setName(rs.getString("name"));
+                    user.setPassword(rs.getString("password"));
+                    return user;
+                }
+            } // Resultset한 로우의 결과를 오브젝트에 매핑해주는 RowMapper 콜백
+        );
     }
 
     public void deleteAll() {
         this.jdbcTemplate.update("delete from tbl_users");
     }
 
-    // 2중 콜백으로 만든 JdbcTemplate이용해서 만든 getCount
-    /*public int getCount() {
-        return this.jdbcTemplate.query(new PreparedStatementCreator() { // 첫번째 콜백
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement("select count(*) from tbl_users");
-            }
-        }, new ResultSetExtractor<Integer>() { // 두번째 콜백
-            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                rs.next();
-                return rs.getInt(1);
-            }
-        });
-    }*/
-
-    // 위보다 훨씬 간결한 JdbcTemplate 내장 메서드
     public int getCount() {
         return this.jdbcTemplate.queryForInt("select count(*) from tbl_users");
     }
