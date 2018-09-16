@@ -4,31 +4,29 @@ import java.util.ArrayList;
 
 public class SimpleDotCom {
 
-    static int[] locationCells;
-    static int numOfHits= 0;
+    private ArrayList<String> locationCells;
+    private String name;
 
-    public static void setLocationCells(int[] locs) {
-        locationCells = locs;
+    public void setLocationCells(ArrayList loc) {
+        locationCells = loc;
     }
 
-    public static String checkYourself(String stringGuess) {
-        // Converts an int to a String
-        int guess = Integer.parseInt(stringGuess);
-        String result = "You're shit! Miss!";
+    public void setName(String n) {
+        name = n;
+    }
 
-        // Repeat for each location cell populated
-        for (int cell : locationCells) {
-            if (guess == cell) {
-                result = "Hit";
-                numOfHits++; // Increase numOfHits by 1
-                break; // Gets you out of the loop
+    public String checkYourself(String userInput) {
+        String status = "miss";
+        int index = locationCells.indexOf(userInput);
+        if (index >= 0) {
+            locationCells.remove(index);
+            if (locationCells.isEmpty()) {
+                status = "kill";
+                System.out.println("ouch! you sunk" + name + " : (" );
+            } else {
+                status = "hit";
             }
         }
-        // Does numOfHits = the number of cells taken up by the target
-        if (numOfHits == locationCells.length) {
-            result = "kill";
-        }
-        System.out.println(result);
-        return result;
+        return status;
     }
 }
