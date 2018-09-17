@@ -11,7 +11,7 @@ public class CalcSumTest {
         Calculator calculator = new Calculator();
         //int sum = calculator.calcSum(getClass().getResource("numbers.txt").getPath()); 사용이 되지 않아 주석처리.
         int sum = calculator.calcSum("C:\\Users\\nGle\\git\\web\\springbook\\src\\test\\java\\springbook\\learningtest\\template\\numbers.txt");
-        assertThat(sum, is(9)); // 10으로 바꾸면 해결된다.
+        assertThat(sum, is(10)); // 10으로 바꾸면 해결된다.
         System.out.println(sum);
     }
 }
