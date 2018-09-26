@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.List;
 import javax.sql.DataSource;
 
-
 public class UserDao {
 
     private JdbcTemplate jdbcTemplate;
@@ -34,13 +33,9 @@ public class UserDao {
                 user.getId(), user.getName(), user.getPassword());
     }
 
-    public User get(String id) {
-        return this.jdbcTemplate.queryForObject("select * from tbl_users where id = ?", new Object[]{id}, this.userMapper);
-    }
+    public User get(String id) { return this.jdbcTemplate.queryForObject("select * from tbl_users where id = ?", new Object[]{id}, this.userMapper); }
 
-    public List<User> getAll() {
-        return this.jdbcTemplate.query("select * from tbl_users order by id", this.userMapper);
-    }
+    public List<User> getAll() { return this.jdbcTemplate.query("select * from tbl_users order by id", this.userMapper); }
 
     public void deleteAll() {
         this.jdbcTemplate.update("delete from tbl_users");
