@@ -1,0 +1,38 @@
+#All contents have to be understandable..
+
+for (Node * node = list -> head; node != NULL; node = node -> next)
+     Print(node -> data);
+
+		다음 코드 보다 이전 코드가 더 좋다
+		
+		Node * node = list -> head;
+		if (node == NULL) return;
+
+		while (node->next != NULL) {
+			Print(node->data);
+		}
+
+		if (node != NULL) Print(node->data);
+
+
+
+		두 코드가 완전히 동일한 일을 수행하고 있음에도 말이다.
+
+
+		다음의 코드는 어떤가?
+		
+		return exponent >= 0 ? mantissa * (1 << exponent) : mantissa / (1 << -exponent);
+		
+		이 코드는 다음 코드보다 더 좋은가 아니면 더 나쁜가?
+
+		if (exponent >= 0) {
+			return mantissa * (1 << exponent);
+		} else {
+			return mantissa / (1 << -exponent);
+		}
+
+		* 코드는 다른 사람이 그것을 이해하는 데 들이는 시간을 최소화하는 방식으로 작성되어야 한다.
+
+		* 1인 프로젝트를 수행하더라도 이러한 목표를 추구하는 일은 의미가 있다.
+		
+		
