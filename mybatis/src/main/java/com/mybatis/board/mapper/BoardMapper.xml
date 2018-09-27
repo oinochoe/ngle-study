@@ -20,16 +20,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- useGeneratedKeys : insert 할 때 자동으로 key를 생성해준다..PK를 다른곳에서 사용해야 될 때 -->
     <update id="boardInsert" parameterType="com.mybatis.board.VO.BoardVO" useGeneratedKeys="true" keyProperty="bno">
-	    INSERT INTO test VALUES (4), (5)
+	    INSERT INTO
+        BOARD  (BNO, SUBJECT,CONTENT,WRITER,REG_DATE)
+        VALUES (#{bno},#{subject},#{content},#{writer},now()) 
 	</update>
-	    
 	<insert id="fileInsert" parameterType="com.mybatis.board.VO.BoardVO">
        INSERT INTO files(fno, bno, filename, fileoriname, fileurl) 
        VALUES (#{fno}, #{bno}, #{fileName}, #{fileOriName}, #{fileUrl}) 
 	</insert>
     
     <update id="boardUpdate" parameterType="com.mybatis.board.VO.BoardVO">
-    	UPDATE board SET subject="TEST", CONTENT="TEST" WHERE content="1"
+    	UPDATE BOARD
+            SET
+        <if test="subject != null">
+            SUBJECT = #{subject}
+        </if>
+        <if test="subject != null and content != null"> , </if>
+        <if test="content != null">
+            CONTENT = #{content}
+        </if>
+        WHERE BNO = #{bno}
     </update>
     
     <delete id="boardDelete" parameterType="int">

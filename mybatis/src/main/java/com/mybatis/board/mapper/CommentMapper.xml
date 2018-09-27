@@ -13,14 +13,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- WHERE BNO = #{bno} order by CNO desc -->
     <insert id="commentInsert" parameterType="com.mybatis.board.VO.CommentVO">
-	    <selectKey keyProperty="cno" resultType="int" order="BEFORE">
-	      SELECT   ifnull(MAX(CNO), 0) 
-	      FROM     comment 
-	      WHERE    BNO=#{bno} 
-	      ORDER BY reg_date desc limit 1
-	    </selectKey>
-        INSERT INTO comment(cno, bno, content, writer, reg_date)
-        VALUES (#{cno} + 1, #{bno}, #{content}, #{writer}, now()) 
+	    INSERT INTO
+        COMMENT (CNO, BNO, CONTENT, WRITER, REG_DATE)
+        VALUES(#{cno},#{bno},#{content},#{writer},now()) 
     </insert>
     
     <update id="commentUpdate" parameterType="com.mybatis.board.VO.CommentVO">
