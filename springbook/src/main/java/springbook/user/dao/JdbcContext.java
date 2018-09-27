@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class JdbcContext {
-    private DataSource dataSource;
+   /* private DataSource dataSource;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -36,5 +36,5 @@ public class JdbcContext {
                 }
             }
         );
-    }
+    }*/
 }
