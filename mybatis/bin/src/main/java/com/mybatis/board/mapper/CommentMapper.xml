@@ -5,35 +5,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  
 <mapper namespace="com.mybatis.board.mapper.CommentMapper">
  
-    <select id="commentCount" resultType="int">
-        SELECT
-            COUNT(*)
-        FROM COMMENT
-    </select>
-    
-    <select id="commentList" resultType="com.mybatis.board.domain.CommentVO">
-        SELECT *
-        FROM COMMENT     
-        WHERE BNO = #{bno}
+    <select id="commentList" resultType="com.mybatis.board.VO.CommentVO">
+        SELECT cno, bno, content, writer, reg_date
+        FROM   comment
+        WHERE  BNO = #{bno}
     </select>
     
     <!-- WHERE BNO = #{bno} order by CNO desc -->
-    
-    <insert id="commentInsert" parameterType="com.mybatis.board.domain.CommentVO">
+    <insert id="commentInsert" parameterType="com.mybatis.board.VO.CommentVO">
 	    <selectKey keyProperty="cno" resultType="int" order="BEFORE">
-	      SELECT ifnull(MAX(CNO), 0) FROM comment where BNO=#{bno} order by reg_date desc limit 1
+	      SELECT   ifnull(MAX(CNO), 0) 
+	      FROM     comment 
+	      WHERE    BNO=#{bno} 
+	      ORDER BY reg_date desc limit 1
 	    </selectKey>
-        INSERT INTO COMMENT (CNO, BNO, CONTENT, WRITER, REG_DATE) VALUES(#{cno} + 1,#{bno},#{content},#{writer},now()) 
+        INSERT INTO comment(cno, bno, content, writer, reg_date)
+        VALUES (#{cno} + 1, #{bno}, #{content}, #{writer}, now()) 
     </insert>
     
-    <update id="commentUpdate" parameterType="com.mybatis.board.domain.CommentVO">
-        UPDATE COMMENT
-            SET
-            CONTENT = #{content}
-        	WHERE CNO = #{cno}
+    <update id="commentUpdate" parameterType="com.mybatis.board.VO.CommentVO">
+        UPDATE comment
+        SET    CONTENT=#{content}
+        WHERE  CNO=#{cno}
     </update>
     
     <delete id="commentDelete" parameterType="int">
-        DELETE FROM COMMENT WHERE CNO = #{cno}
+        DELETE FROM comment
+        WHERE  CNO=#{cno}
     </delete>
 </mapper>

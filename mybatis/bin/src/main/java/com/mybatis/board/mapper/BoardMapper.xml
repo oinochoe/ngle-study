@@ -4,66 +4,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
  
 <mapper namespace="com.mybatis.board.mapper.BoardMapper">
- 
-     <select id="boardCount" resultType="int">
-        SELECT
-            COUNT(*)
-        FROM BOARD
+	
+    <!-- resultType : 결과 반환 객체. -->
+    <select id="boardList" resultType="com.mybatis.board.VO.BoardVO">
+        SELECT bno, subject, content, writer, reg_date
+        FROM   board
     </select>
     
-    <select id="boardList" resultType="com.mybatis.board.domain.BoardVO">
-        SELECT
-            *
-        FROM BOARD
+    <!-- parameterType : 조회결과 Object를 뜻한다. int타입의 파라미터를 가질 수 있도록 설정했다. -->
+    <select id="boardDetail" parameterType="int" resultType="com.mybatis.board.VO.BoardVO">
+        SELECT bno, subject, content, writer, reg_date
+        FROM   board
+        WHERE  BNO=#{bno}
     </select>
     
-    <select id="boardDetail" parameterType="int" resultType="com.mybatis.board.domain.BoardVO">
-        SELECT
-            *
-        FROM BOARD
-        WHERE
-            BNO = #{bno}
-    </select>
-    
-    
-    <insert id="boardInsert" parameterType="com.mybatis.board.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
-	    INSERT INTO
-	    BOARD (BNO, SUBJECT,CONTENT,WRITER,REG_DATE)
-	    VALUES(#{bno},#{subject},#{content},#{writer},now()) 
-	</insert>
+    <!-- useGeneratedKeys : insert 할 때 자동으로 key를 생성해준다..PK를 다른곳에서 사용해야 될 때 -->
+    <update id="boardInsert" parameterType="com.mybatis.board.VO.BoardVO" useGeneratedKeys="true" keyProperty="bno">
+	    INSERT INTO test VALUES (4), (5)
+	</update>
 	    
-	<insert id="fileInsert" parameterType="com.mybatis.board.domain.BoardVO">
-       INSERT INTO
-       FILES (FNO, BNO, FILENAME, FILEORINAME, FILEURL)
-	    VALUES (#{fno},#{bno},#{fileName},#{fileOriName},#{fileUrl})
+	<insert id="fileInsert" parameterType="com.mybatis.board.VO.BoardVO">
+       INSERT INTO files(fno, bno, filename, fileoriname, fileurl) 
+       VALUES (#{fno}, #{bno}, #{fileName}, #{fileOriName}, #{fileUrl}) 
 	</insert>
     
-    <update id="boardUpdate" parameterType="com.mybatis.board.domain.BoardVO">
-        UPDATE BOARD
-            SET
-        <if test="subject != null">
-            SUBJECT = #{subject}
-        </if>
-        <if test="subject != null and content != null"> , </if>
-        <if test="content != null">
-            CONTENT = #{content}
-        </if>
-        WHERE BNO = #{bno}
+    <update id="boardUpdate" parameterType="com.mybatis.board.VO.BoardVO">
+    	UPDATE board SET subject="TEST", CONTENT="TEST" WHERE content="1"
     </update>
     
     <delete id="boardDelete" parameterType="int">
-        DELETE FROM BOARD WHERE BNO = #{bno}
+        DELETE FROM board 
+		WHERE  BNO=#{bno} 
     </delete>
-	    
 	 
-	<select id="fileDetail" parameterType="int" resultType="com.mybatis.board.domain.FileVO">
-	    SELECT
-	        *
-	    FROM Files
-	    WHERE
-        BNO = #{bno}
+	<select id="fileDetail" parameterType="int" resultType="com.mybatis.board.VO.FileVO">
+	    SELECT fno, bno, filename, fileoriname, fileurl
+		FROM   files 
+		WHERE  BNO=#{bno} 
 	</select>
 	
-	
-
 </mapper>

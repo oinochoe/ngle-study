@@ -10,7 +10,6 @@ $('[name=commentInsertBtn]').click(function(){ //댓글 등록 버튼 클릭시
 });
  
  
- 
 //댓글 목록 
 function commentList(){
     $.ajax({
@@ -85,8 +84,6 @@ function commentDelete(cno){
         }
     });
 }
- 
- 
  
  
 $(document).ready(function(){
