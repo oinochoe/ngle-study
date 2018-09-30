@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mybatis.board.dao.ExcelDao"> <!-- namespace에서 interface로 정의된 DAO를 정확히 명시해주어야 한다-->
+    <select id="selectBooks" resultType="com.mybatis.board.VO.ExcelVO">
+        SELECT  MONTH_REPORT_ID
+               ,SELLING_TIME
+               ,GAME_NAME
+               ,PARTNER_COMPANY
+               ,CONTRACT_TYPE
+               ,SYSTEM_CURRENCY
+               ,PAY_CURRENCY
+               ,COUNTRY
+        FROM    books
+        <where>
+            <if test="MONTH_REPORT_ID != null and !MONTH_REPORT_ID.equals('')">
+                and MONTH_REPORT_ID = #{MONTH_REPORT_ID}
+            </if>
+        </where>
+    </select>
+    <!--<select id="selectBoosDetail" resultType="com.mybatis.board.VO.ExcelDetailVO">
+        SELECT
+        FROM
+
+    </select>-->
+</mapper>

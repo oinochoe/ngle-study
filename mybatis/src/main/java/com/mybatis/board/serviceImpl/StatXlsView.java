@@ -34,12 +34,12 @@ public class StatXlsView extends AbstractXlsView {
             cell0.setCellValue(stat.getName());
 
             Cell cell1 = row.createCell(1);
-            cell1.setCellType(CellType.NUMERIC);
+            //cell1.setCellType(CellType.NUMERIC);
             cell1.setCellValue(stat.getValue1());
             cell1.setCellStyle(numberCellStyle);
 
             Cell cell2 = row.createCell(2);
-            cell2.setCellType(CellType.NUMERIC);
+            //cell2.setCellType(CellType.NUMERIC);
             cell2.setCellValue(stat.getValue2());
             cell2.setCellStyle(numberCellStyle);
 

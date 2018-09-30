@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mybatis.board.service.BoardService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mybatis.board.VO.BoardVO;
 import com.mybatis.board.VO.FileVO;
-import com.mybatis.board.service.BoardService;
 
 @Controller
 public class BoardController {
@@ -31,7 +31,7 @@ public class BoardController {
 	    //@Autowired 어노테이션이 타입으로 자동 주입을 하는 반면, 
 		//@Resource 어노테이션은 name속성을 통해 자동 주입을 실행한다
 	    @Resource(name="com.mybatis.board.service.BoardService")
-	    BoardService mBoardService;
+		BoardService mBoardService;
 	    
 	    @RequestMapping("/list")
 	    private String boardList(Model model) throws Exception{
