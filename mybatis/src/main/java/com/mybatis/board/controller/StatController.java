@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-
 public class StatController {
 
     private void populateModel(Model model) {

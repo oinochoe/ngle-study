@@ -1,4 +1,4 @@
-package com.mybatis.board.component;
+package com.mybatis.board.serviceImpl;
 
 import com.mybatis.board.VO.StatRow;
 import org.apache.poi.ss.usermodel.*;
