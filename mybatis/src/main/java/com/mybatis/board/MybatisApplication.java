@@ -8,10 +8,12 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 
-@SpringBootApplication
+
 //MapperScan : Mapper 인터페이스를 인식할 수 있도록 설정
 @MapperScan(value={"com.mybatis.board.mapper"})
+@SpringBootApplication
 public class MybatisApplication {
 	
 	//스프링 부트는 별도의 서버 설정 없이 main() 메서드를 실행하는것 만으로도 내장된 Tomcat서버를 이용해서 프로젝트가 실행됩니다.

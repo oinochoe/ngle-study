@@ -1,6 +1,7 @@
 package springbook.user.dao;
 
 import com.mysql.jdbc.MysqlErrorNumbers;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import springbook.user.domain.User;
@@ -36,20 +37,21 @@ public class UserDao {
         }
     }
 
-    // 예외전략 추가
+    /**
+     * 예외 전략 추가
+     * 중복 키 예외의 전환
+     * */
     public void add(final User user) throws DuplicateUserIdException {
-        //try {
+        try {
             this.jdbcTemplate.update("insert into tbl_users(id, name, password) values(?,?,?)",
                     user.getId(), user.getName(), user.getPassword());
-        //}
-        /*catch (SQLException e) {
-            if (e.getErrorCode() == MysqlErrorNumbers.ER_DUP_ENTRY) {
-                throw new DuplicateUserIdException(e); // 예외 전환
-            } else {
-                throw new RuntimeException(e); // 예외 포장
-            }
-        }*/
-
+        } catch (DuplicateKeyException e) {
+            /**
+             * 로그 남기는 등의 필요한 작업
+             * 예외 전환할 때 원인이 되는 예외를 중첩하는 것이 좋다.
+             * */
+            throw new DuplicateUserIdException(e);
+        }
     }
 
     public User get(String id) { return this.jdbcTemplate.queryForObject("select * from tbl_users where id = ?", new Object[]{id}, this.userMapper); }
